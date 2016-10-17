@@ -14,7 +14,7 @@ public class jConsoleTest {
     public static void fillHeap(int num) throws InterruptedException {
         List<OOMObject> list = new ArrayList<OOMObject>();
         for (int i = 0; i < num; i++) {
-            //稍作延时，让监视曲线的变化更加明显
+            //稍作延时，让监视曲线的变化更加明�?
             Thread.sleep(50);
             list.add(new OOMObject());
         }
