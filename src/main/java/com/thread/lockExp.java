@@ -9,7 +9,7 @@ public class lockExp {
 
     public static void createBusyThread() {
         Thread thread = new Thread(new Runnable() {
-            @Override
+//            @Override
             public void run() {
                 // TODO Auto-generated method stub
                 while (true) ;
@@ -22,7 +22,7 @@ public class lockExp {
     public static void createLockThread(final Object lock) {
         Thread thread = new Thread(new Runnable() {
 
-            @Override
+//            @Override
             public void run() {
                 // TODO Auto-generated method stub
                 synchronized (lock) {
