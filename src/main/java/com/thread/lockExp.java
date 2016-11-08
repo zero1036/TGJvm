@@ -5,7 +5,7 @@ import java.io.InputStreamReader;
 
 import com.sun.org.apache.bcel.internal.generic.NEW;
 
-public class lockExp {
+public class LockExp {
 
     public static void createBusyThread() {
         Thread thread = new Thread(new Runnable() {
@@ -48,4 +48,8 @@ public class lockExp {
         createLockThread(object);
     }
 
+
+    private  synchronized  void Go(){
+
+    }
 }

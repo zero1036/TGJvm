@@ -14,3 +14,10 @@ hs_err_pid*
 #folder
 Hprof/
 /bin
+
+target/
+*.iml
+*.ipr
+*.iws
+.idea/
+logs/
