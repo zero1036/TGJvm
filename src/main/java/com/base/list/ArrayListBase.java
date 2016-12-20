@@ -12,7 +12,7 @@ public class ArrayListBase {
     }
 
     private static void testSimple() {
-        int capacity = 2; //瀹归噺璁句负2
+        int capacity = 2; //容量设为2
         List<Integer> list = new ArrayList<Integer>(capacity);
         list.add(1);
         list.add(2);

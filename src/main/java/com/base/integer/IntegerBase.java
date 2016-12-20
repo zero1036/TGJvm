@@ -1,4 +1,4 @@
-package com.base;
+package com.base.integer;
 
 /**
  * Created by linzc on 2016/11/9.
