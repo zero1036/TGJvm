@@ -1,4 +1,4 @@
-package com.base;
+package com.base.string;
 
 /**
  * Created by linzc on 2016/11/8.

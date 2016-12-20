@@ -1,4 +1,4 @@
-package com.base;
+package com.base.string;
 
 import java.lang.reflect.Field;
 
