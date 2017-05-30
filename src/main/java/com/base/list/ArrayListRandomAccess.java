@@ -12,7 +12,7 @@ public class ArrayListRandomAccess {
 
     public static void main(String[] args) {
         List list = new ArrayList();
-        for (int i = 0; i < 100000; i++)
+        for (int i = 0; i < 1000000; i++)
             list.add(i);
         //isRandomAccessSupported(list);
         iteratorThroughRandomAccess(list);
