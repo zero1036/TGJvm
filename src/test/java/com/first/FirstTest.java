@@ -1,6 +1,7 @@
 package com.first;
 
 
+import com.tg.base.classLoader.First;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -29,6 +30,6 @@ public class FirstTest {
 
     @Test
     public void testFirst() throws Exception {
-        assertEquals(firstTest.GetTarget(), 2);
+        assertEquals(firstTest.getTarget(), "im tg");
     }
 }

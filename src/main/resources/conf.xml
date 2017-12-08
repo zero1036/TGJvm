@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <!-- 配置数据库连接信息 -->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"/>
+                <property name="url"
+                          value="jdbc:mysql://192.168.105.51:3306/pp_code?characterEncoding=utf8&amp;autoReconnect=true&amp;t=1"/>
+                <property name="username" value="pp_ppcode"/>
+                <property name="password" value="ppmoney@123"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--通过Maven打包时，默认情况下不会打包src目录下的xml文件，因此，如下结构会报错`Could not find resource com.tg.mybatis.lotteryMapper.xml`-->
+    <!--<mappers>-->
+    <!--<mapper resource="com/tg/mybatis/lotteryMapper.xml"/>-->
+    <!--</mappers>-->
+
+    <mappers>
+        <mapper resource="mapper/lotteryMapper.xml"/>
+        <!-- 注册LotteryMapper映射接口-->
+        <mapper class="com.tg.mybatis.LotteryMapper"/>
+    </mappers>
+</configuration>

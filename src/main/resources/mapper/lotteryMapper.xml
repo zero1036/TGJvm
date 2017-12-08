@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为这个mapper指定一个唯一的namespace，namespace的值习惯上设置成包名+sql映射文件名，这样就能够保证namespace的值是唯一的
+例如namespace="me.gacl.mapping.userMapper"就是me.gacl.mapping(包名)+userMapper(userMapper.xml文件去除后缀)
+ -->
+<mapper namespace="com.tg.mybatis.mapping.lotteryMapper">
+
+    <resultMap type="com.tg.mybatis.LotteryActivity" id="lotteryActivity">
+        <id property="id" column="id"/>
+        <result property="title" column="title"/>
+        <result property="gameType" column="game_type"/>
+        <result property="del" column="del"/>
+    </resultMap>
+
+    <select id="getLotteryActivities" resultMap="lotteryActivity">
+        SELECT
+        id,
+        title,
+        game_type,
+        del
+        FROM lottery_activity4
+    </select>
+
+    <insert id="addActivity" parameterType="com.tg.mybatis.LotteryActivity">
+insert into lottery_activity4
+(
+title,
+client_type,
+begin_time,
+start_date,
+end_date,
+probability,
+chance_type,
+limit_times,
+need_chances,
+game_type,
+store_type,
+create_date,
+creator,
+edit_date,
+editor,
+del,
+anonymous,
+version
+) values(
+#{title},
+1,
+'00:00:00',
+ '2016-09-10 07:15:30',
+'2016-09-11 07:15:30',
+200,
+1,
+1,
+1,
+#{gameType},
+0,
+'2016-09-11 07:15:30',
+'sys',
+'2016-09-11 07:15:30',
+'sys',
+#{del},
+1,
+23
+)
+    </insert>
+</mapper>
