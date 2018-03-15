@@ -3,15 +3,15 @@ package com.tg.annotation.custom;
 /**
  * Created by Thinkpads on 2018/3/15.
  */
-@NameScanner
+@NameScanner(name = "name scanner test class")
 public class NameScannerTest {
-    @NameScanner
+    @NameScanner(name = "field name")
     private String name;
 
     @NameScanner
     private int age;
 
-    @NameScanner
+    @NameScanner(name = "get name method")
     public String getName() {
         return this.name;
     }
@@ -22,6 +22,7 @@ public class NameScannerTest {
     }
 
     public static void main(String[] args) {
+        NameScannerProcessor2.init(NameScannerTest.class);
         System.out.println("--finished--");
     }
 }

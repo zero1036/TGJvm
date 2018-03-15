@@ -8,7 +8,11 @@ import java.lang.annotation.Target;
 /**
  * Created by Thinkpads on 2018/3/15.
  */
-@Target({ElementType.TYPE, ElementType.METHOD, ElementType.FIELD})
-@Retention(RetentionPolicy.SOURCE)
+@Target({ElementType.TYPE,
+        ElementType.METHOD,
+        ElementType.FIELD,
+        ElementType.LOCAL_VARIABLE})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface NameScanner {
+    public String name() default "";
 }
