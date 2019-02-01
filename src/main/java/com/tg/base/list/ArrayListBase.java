@@ -123,6 +123,7 @@ public class ArrayListBase {
                 if (current == mapper) {
                     bitSet.set(j, true);
                 }
+
             }
             target.add(current);
         }
