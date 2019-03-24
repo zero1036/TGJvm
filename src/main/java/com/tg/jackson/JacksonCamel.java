@@ -1,6 +1,7 @@
 package com.tg.jackson;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.cfg.MapperConfig;
@@ -22,6 +23,14 @@ import java.util.Map;
  * Created by linzc on 2017/7/17.
  */
 public class JacksonCamel {
+
+    @Test
+    public void test2() throws IOException {
+        TypeReference<String> reference = new TypeReference<String>() {
+        };
+
+        System.out.println(reference.getType().getTypeName());
+    }
 
     @Test
     public void test() throws IOException {
@@ -51,8 +60,8 @@ public class JacksonCamel {
         private static final long serialVersionUID = 7409208852048633519L;
 
         @JsonProperty("CustomerId")
-        private int CustomerId =0;
-        private String UserNumber="";
+        private int CustomerId = 0;
+        private String UserNumber = "";
 
         public int getCustomerId() {
             return CustomerId;

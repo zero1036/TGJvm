@@ -12,7 +12,7 @@ import org.mongodb.morphia.annotations.Property;
 
 import java.util.List;
 
-@Entity(value = "TestCustomer", noClassnameStored = true)
+@Entity(value = "test3", noClassnameStored = true)
 public class Customer {
     /**
      * key
@@ -20,17 +20,20 @@ public class Customer {
     @Id
     private ObjectId id;
 
-    @Property("Name")
+    @Property("name")
     private String name;
 
-    @Property("Age")
+    @Property("age")
     private Integer age;
 
-    @Property("Phone")
+    @Property("phone")
     private String phone;
 
-    @Embedded("Role")
+    @Embedded("role")
     private List<String> role;
+
+    @Property("version")
+    private Integer version;
 
     public ObjectId getId() {
         return id;
@@ -70,5 +73,13 @@ public class Customer {
 
     public void setRole(List<String> role) {
         this.role = role;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
     }
 }

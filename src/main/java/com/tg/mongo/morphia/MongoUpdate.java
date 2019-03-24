@@ -1,11 +1,13 @@
 package com.tg.mongo.morphia;
 
 import com.tg.mongo.bean.Cids;
+import com.tg.mongo.bean.Customer;
 import com.tg.mongo.bean.Setting;
 import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.query.Query;
 import org.mongodb.morphia.Key;
-import org.mongodb.morphia.query.*;
+import org.mongodb.morphia.query.Query;
+import org.mongodb.morphia.query.UpdateOperations;
+import org.mongodb.morphia.query.UpdateResults;
 
 /**
  * Created by linzc on 2016/10/24.
@@ -15,7 +17,8 @@ public class MongoUpdate extends MongoBase {
     public static void main(String[] args) {
 //        updateByBson();
 //        updateFirst();
-        findAndModify();
+//        findAndModify();
+        test();
     }
 
     /**
@@ -71,4 +74,41 @@ public class MongoUpdate extends MongoBase {
         Cids cids = ds.findAndModify(qry, uo);
         System.out.println(cids.getId());
     }
+
+
+    public static void test() {
+
+String name = "tg4";
+        Datastore ds = getDatastore();
+        Query<Customer> qry = ds.find(Customer.class);
+        qry.filter("name =", name);
+
+
+        UpdateOperations<Customer> uoVersion = ds.createUpdateOperations(Customer.class);
+        uoVersion.inc("version", 1);
+        Customer ct = ds.findAndModify(qry, uoVersion, true);
+        if (ct == null) {
+            Customer newCt = new Customer();
+            newCt.setAge(1);
+            newCt.setName(name);
+            newCt.setVersion(1);
+            ds.save(newCt);
+        }
+        else{
+
+        }
+
+        UpdateOperations<Customer> updateAge = ds.createUpdateOperations(Customer.class);
+        updateAge.inc("age", 1);
+
+        UpdateResults results = ds.updateFirst(qry, updateAge, true);
+        int n = results.getWriteResult().getN();
+
+
+        Customer customer = qry.get();
+//        Customer cids = (Customer) results;
+        System.out.println(results);
+    }
+
+
 }

@@ -1,13 +1,17 @@
 package com.tg.jedis;
 
+import org.junit.Before;
+import org.junit.Test;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-import redis.clients.jedis.Jedis;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by linzc on 2017/3/2.
@@ -153,5 +157,110 @@ public class jedisBase {
     public void testHashgetall() {
         Map<String, String> map = jedis.hgetAll("ACTIVITY_STORE_HASH:304");
         System.out.println(map.size());
+    }
+
+    /**
+     * 当jedisPool中jedis资源数不超过maxTotal，超过的第N个从jedisPool中获取jedis的请求会线程挂起，挂起时间为maxWaitMills；
+     * 当过长中
+     * @throws InterruptedException
+     */
+    @Test
+    public void testJedisPoolOverTime() throws InterruptedException {
+        JedisPoolConfig config = new JedisPoolConfig();
+        //池对象，即jedisPool最大数量
+        config.setMaxTotal(3);
+        config.setMaxIdle(3);
+        //从池中获取池对象，缺少时等待，等待超过毫秒数放弃等待
+        config.setMaxWaitMillis(5000);
+//        config.setBlockWhenExhausted(false);
+
+        final int sleepSecond = 5;
+        JedisPool jedisPool = new JedisPool(config, "192.168.107.16", 6379, 3000, null, 4);
+
+        for (int i = 1; i <= 5; i++) {
+            final int index = i;
+            if (index == 5) {
+                System.out.println("asset");
+            }
+
+            new Thread(() -> {
+                action(jedisPool, index, sleepSecond);
+            }).start();
+
+//            CompletableFuture.runAsync(() -> {
+//                action(jedisPool, index, sleepSecond);
+//            });
+        }
+
+        System.out.println("end");
+        TimeUnit.SECONDS.sleep(600);
+
+    }
+
+    private void action(JedisPool jedisPool, int index, int sleepSecond) {
+        System.out.println("Thread-" + index + "-begin");
+
+        String result = RedisUtils.eval(jedisPool, jedis1 -> {
+            String value = jedis1.get("testKey");
+            System.out.println("Thread-" + index + "-" + value);
+            try {
+                TimeUnit.SECONDS.sleep(sleepSecond);
+            } catch (InterruptedException ex) {
+
+            }
+            return value;
+        });
+    }
+
+
+    @Test
+    public void testJedisPoolOverTime3() throws InterruptedException {
+        JedisPoolConfig config = new JedisPoolConfig();
+        //池对象，即jedisPool最大数量
+        config.setMaxTotal(3);
+        config.setMaxIdle(3);
+        //从池中获取池对象，缺少时等待，等待超过毫秒数放弃等待
+        config.setMaxWaitMillis(100000);
+
+        final int sleepSecond = 20;
+        JedisPool jedisPool = new JedisPool(config, "192.168.107.16", 6379, 3000, null, 4);
+
+        for (int i = 1; i <= 5; i++) {
+            final int index = i;
+            if (index == 5) {
+                System.out.println("asset");
+            }
+
+            new Thread(() -> {
+                CompletableFuture.runAsync(() -> {
+                    System.out.println("Thread-" + index + "-begin");
+
+                    RedisUtils.eval(jedisPool, jedis1 -> {
+
+                        try {
+                            TimeUnit.SECONDS.sleep(sleepSecond);
+                        } catch (InterruptedException ex) {
+
+                        }
+
+                        String value = jedis1.get("testKey");
+                        System.out.println("Thread-" + index + "-" + value);
+                        return value;
+                    });
+
+                    CompletableFuture.runAsync(() -> {
+                        RedisUtils.eval(jedisPool, jedis1 -> {
+                            String value = jedis1.get("testKey");
+                            System.out.println("Task-" + index + "-" + value);
+                            return value;
+                        });
+                    });
+                });
+            }).start();
+        }
+
+        System.out.println("end");
+        TimeUnit.SECONDS.sleep(600);
+
     }
 }

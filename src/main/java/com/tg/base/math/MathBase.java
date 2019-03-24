@@ -1,10 +1,50 @@
 package com.tg.base.math;
 
+import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.Objects;
+
 /**
  * 数字运算符基础
  * Created by linzc on 2016/11/21.
  */
 public class MathBase {
+
+    @Test
+    public void test_1() {
+//        Object ccc = "3d56";
+
+
+//        String ccc = "99.9995";
+//        BigDecimal bigDecimal = new BigDecimal(ccc);
+//        System.out.println(bigDecimal);
+
+
+        String value = "99.9995";
+
+        Double var1 = Double.parseDouble(value);
+        BigDecimal var2 = new BigDecimal(var1);
+        BigDecimal var3 = new BigDecimal(value);
+
+        System.out.println(var1);
+        System.out.println(var2);
+        System.out.println(var3);
+        System.out.println(Objects.equals(var2, var3));
+    }
+
+    /**
+     * 保留两位小数测试
+     */
+    @Test
+    public void test2() {
+        System.out.println(new BigDecimal(0.2).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());// 0.2
+        System.out.println(new BigDecimal(0.235).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());// 0.23
+        System.out.println(new BigDecimal(0.2351).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());// 0.24
+        System.out.println(new BigDecimal(42).setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue());// 42.0
+
+        System.out.println(new BigDecimal(0.239).setScale(2, BigDecimal.ROUND_DOWN));
+    }
 
     public static void main(String[] args) {
 //        test1();

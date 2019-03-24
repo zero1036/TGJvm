@@ -172,4 +172,40 @@ public final class DateUtils {
         day.set(Calendar.MILLISECOND, 999);
         return day.getTime();
     }
+
+    /**
+     * 获取某一周起始零点
+     *
+     * @param date 某天日期
+     * @return 返回时间
+     */
+    public static Date getStartTimeOfWeek(Date date, boolean firstDayIsMonday) {
+        Calendar day = Calendar.getInstance();
+        day.setTime(date);
+
+        day.set(Calendar.DAY_OF_WEEK, 1);
+        day.set(Calendar.HOUR_OF_DAY, 0);
+        day.set(Calendar.MINUTE, 0);
+        day.set(Calendar.SECOND, 0);
+        day.set(Calendar.MILLISECOND, 0);
+        return day.getTime();
+    }
+
+    /**
+     * 获取某一周结束的末点
+     *
+     * @param date 某天日期
+     * @return 返回时间
+     */
+    public static Date getEndTimeOfWeek(Date date) {
+        Calendar day = Calendar.getInstance();
+        day.setTime(date);
+
+        day.set(Calendar.DAY_OF_WEEK, 7);
+        day.set(Calendar.HOUR_OF_DAY, 23);
+        day.set(Calendar.MINUTE, 59);
+        day.set(Calendar.SECOND, 59);
+        day.set(Calendar.MILLISECOND, 999);
+        return day.getTime();
+    }
 }

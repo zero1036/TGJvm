@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static com.tg.date.DateUtils.getEndTimeOfMonth;
 import static com.tg.date.DateUtils.getStartTimeOfMonth;
@@ -31,5 +32,17 @@ public class DateTest {
         day.setTime(date);
         System.out.println(date);
         Assert.assertTrue(day.get(Calendar.DAY_OF_MONTH) == 30);
+    }
+
+    @Test
+    public void getEndTimeOfWeek() {
+        Locale.setDefault(Locale.FRANCE);
+
+        Date now = new Date();
+        Date startTimeOfWeek = DateUtils.getStartTimeOfWeek(now, true);
+        Date endTimeOfWeek = DateUtils.getEndTimeOfWeek(now);
+
+        System.out.println(startTimeOfWeek);
+        System.out.println(endTimeOfWeek);
     }
 }

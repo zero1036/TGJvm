@@ -40,12 +40,27 @@ public class rxjavaTest {
 
             @Override
             public void onError(Throwable throwable) {
-
             }
 
             @Override
             public void onNext(Integer integer) {
                 System.out.println("runnint " + integer);
+            }
+        });
+
+        observable.subscribe(new Observer<Integer>() {
+            @Override
+            public void onCompleted() {
+
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+            }
+
+            @Override
+            public void onNext(Integer integer) {
+                System.out.println("runnint2 " + integer);
             }
         });
         System.out.println("other...");

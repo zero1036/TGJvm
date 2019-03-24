@@ -1,6 +1,7 @@
 package com.tg.thread.threadLocal;
 
 import com.tg.mongo.bean.Customer;
+import org.junit.Test;
 
 /**
  * Created by linzc on 2016/11/9.
@@ -21,7 +22,8 @@ public class ThreadLocalBase {
         System.out.println(tl.get().getName());
     }
 
-    public static void main3(String[] args) throws InterruptedException {
+    @Test
+    public void test1() throws InterruptedException {
         final Customer customer = new Customer();
         customer.setName("TG");
 

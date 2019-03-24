@@ -4,64 +4,74 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import org.junit.Test;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by linzc on 2017/8/15.
- */
 public class CacheTest {
-    /**
-     * 重要loadingCache最好是单例
-     *
-     * @param pa
-     */
-    public static void main(String... pa) throws InterruptedException {
-//        LoadingCache<String, String> cache = CacheBuilder.newBuilder()
-//                .expireAfterAccess(100, TimeUnit.MILLISECONDS)
-//                .build(new CacheLoader<String, String>() {
-//                    @Override
-//                    public String load(String key) throws Exception {
-//                        System.out.println("loading from cache");
-//                        return "test";
-//                    }
-//                });
-//
-//        invoke(cache);
-//        invoke(cache);
-//        Thread.sleep(100);
-//        invoke(cache);
 
+    @Test
+    public void testUsual() throws InterruptedException {
+        LoadingCache<String, String> cache = CacheBuilder.newBuilder()
+                //缓存项在创建后，在给定时间内没有被读/写访问，则清除。
+                .expireAfterAccess(100, TimeUnit.MILLISECONDS)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) throws Exception {
+                        System.out.println("loading from CacheLoader datasource ");
+                        Thread.sleep(500);
+                        return "test";
+                    }
+                });
 
-        Cache<String, String> cache2 = CacheBuilder.newBuilder()
-                .expireAfterAccess(100, TimeUnit.MILLISECONDS) //缓存项在创建后，在给定时间内没有被读/写访问，则清除。
-                .build();
+        Thread thread1 = new Thread(() -> {
+            getAndReload(cache);
+        });
+        Thread thread2 = new Thread(() -> {
+            getAndReload(cache);
+        });
 
-        invoke2(cache2);
-        invoke2(cache2);
-        Thread.sleep(100);
-        invoke2(cache2);
+        thread1.start();
+        thread2.start();
+        Thread.sleep(2000);
     }
 
-    private static void invoke(LoadingCache<String, String> cache) {
+    @Test
+    public void testLoadingCacheExpireAfterAccess() throws InterruptedException {
+        LoadingCache<String, String> cache = CacheBuilder.newBuilder()
+                //缓存项在创建后，在给定时间内没有被读/写访问，则清除。
+                .expireAfterAccess(100, TimeUnit.MILLISECONDS)
+                .build(new CacheLoader<String, String>() {
+                    @Override
+                    public String load(String key) throws Exception {
+                        System.out.println("loading from CacheLoader datasource ");
+                        return "test";
+                    }
+                });
+
+        getAndReload(cache);
+        getAndReload(cache);
+        Thread.sleep(200);
+        getAndReload(cache);
+    }
+
+    private void getAndReload(Cache<String, String> cache) {
         try {
-            String result = cache.get("key", ()->{
-                System.out.println("loading from cache");
+            String result = cache.get("key", () -> {
+                System.out.println("loading from datasource");
                 return "test";
             });
-            System.out.println(result);
+            System.out.println(Thread.currentThread().getName() + ":" + result);
         } catch (ExecutionException ex) {
             ex.printStackTrace();
         }
     }
 
-    private static void invoke2(Cache<String, String> cache) {
+
+    private void getOnly(LoadingCache<String, String> cache) {
         try {
-            String result = cache.get("key", () -> {
-                System.out.println("loading from cache");
-                return "test";
-            });
+            String result = cache.get("key");
             System.out.println(result);
         } catch (ExecutionException ex) {
             ex.printStackTrace();
